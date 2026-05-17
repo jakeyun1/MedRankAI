@@ -1,0 +1,7 @@
+__pycache__/
+.vscode/
+*.swp
+embeddings/
+results/
+configs/
+scripts/__pycache__/
