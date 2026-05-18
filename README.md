@@ -1,5 +1,5 @@
 # Medical Foundation Model Testbench #
-https://jamesmml.github.io/
+https://parrarodrigu.github.io/foundation-model-site
 
 ## Setup ##
 1. Prior to setup, it is recommended to set up a separate environment using the correct Python version (3.10.19)
