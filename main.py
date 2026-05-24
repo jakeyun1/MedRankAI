@@ -10,7 +10,7 @@ import json
 import argparse
 from datetime import datetime
 
-PROHIBITED_CHARS = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|"]
+PROHIBITED_CHARS = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "_"]
 
 # Format: (id_col, label_col)
 DATASET_COL_MAP = {"pad_ufes": ("img_id", "diagnostic"), "cbis_ddsm": ("image file path", "pathology"),
