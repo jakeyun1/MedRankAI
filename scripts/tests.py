@@ -369,7 +369,7 @@ def KNN_cv(dataset_name, embeddings, metadata_df, image_paths, id_col, label_col
             "f1_weighted": float(res["test_f1_weighted"].mean()),
             "precision_weighted": [float(np.mean(res["test_precision_weighted"])),
                                    float(np.std(res["test_precision_weighted"]))],
-            "roc_auc": float(res["test_roc_auc"].mean()),
+            "roc_auc": [float(res["test_roc_auc"].mean()), float(res["test_roc_auc"].std())]
         },
         "classes": classes,
         "best_params": study.best_params
