@@ -29,7 +29,7 @@ kagglehub.dataset_download("ashery/chexpert")
 # CBIS-DDSM
 kagglehub.dataset_download("awsaf49/cbis-ddsm-breast-cancer-image-dataset")
 
-# ODIR
+# ODIR-5K
 kagglehub.dataset_download("andrewmvd/ocular-disease-recognition-odir5k")
 
 # HAM10000

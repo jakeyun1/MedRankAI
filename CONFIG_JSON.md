@@ -64,4 +64,4 @@ Tschandl et al. The HAM10000 dataset. Harvard Dataverse, 2018. doi:10.7910/DVN/D
 
 Lee et al. CBIS-DDSM: Curated Breast Imaging Subset. TCIA, 2016. doi:10.7937/K9/TCIA.2016.7O02S9CY.​
 
-ODIR-5K: Ocular Disease Intelligent Recognition. Kaggle, 2025. [Online]. https://www.kaggle.com/datasets/andrewmvd/ocular-disease-recognition-odir5k.​
+ODIR-5K: Ocular Disease Intelligent Recognition. Kaggle, 2025. [Online]. [https://www.kaggle.com/datasets/andrewmvd/ocular-disease-recognition-odir5k.​](https://www.kaggle.com/datasets/andrewmvd/ocular-disease-recognition-odir5k)
