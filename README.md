@@ -1,7 +1,7 @@
-# **MedImage-FLEX:** **Med**ical **Image** **F**oundation **L**atent **E**mbedding e**X**amination #
+# **MedImage-FLEX:** **Med**ical **Image** **F**oundation **L**atent **E**mbedding e**X**amination
 [https://parrarodrigu.github.io/medimage-flex](https://parrarodrigu.github.io/foundation-model-site)
 
-## Setup ##
+## Setup
 1. Prior to setup, it is recommended to set up a separate environment using the correct Python version (3.10.19)
 ```
 # Example using conda
@@ -15,7 +15,7 @@ cd environment
 python setup.py
 cd ..
 ```
-## Running the Testbench ##
+## Running the Testbench
 1. Choose your model 
 2. Add its `model_id` and loading logic to [`scripts/models.py`](scripts/models.py)
 3. Create a model configuration JSON file with respect to the format in `CONFIG_JSON.md`
