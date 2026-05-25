@@ -20,24 +20,37 @@ TASK_MAP = {"pad_ufes": "Skin lesions",
             "cbis_ddsm": "Mammograms",
             "chexpert": "Chest radiographs"}
 
-METRICS_MAP = {"Classification": ["mlp_cv_f1", "knn_cv_f1", "logreg_cv_f1"],
-               "Retrieval": ["recall@5", "map"],
+METRICS_MAP = {"Retrieval": ["recall@5", "map"],
                "Clustering": "nmi"}
 
 def compute_classification_averages(json_list):
     """
-    Calculates the average F1 score across the used 
+    Calculates the average F1 and mAUC scores across the used 
     datasets amongst the MLP, KNN, and LR adapters.
 
     Sample output:
-    {"mlp_cv_f1": [.738, .023], 
-    "knn_cv_f1": [.627, .026],
-    "logreg_cv_f1": [.364, .0032]}
+    {
+        "mlp_cv": {
+            "f1": [0.738, 0.023],
+            "mauc": [0.473, 0.021]
+        },
+        "knn_cv": {
+            "f1": [0.627, 0.026],
+            "mauc": [0.471, 0.018]
+        },
+        "logreg_cv": {
+            "f1": [0.364, 0.0032],
+            "mauc": [0.423, 0.011]
+        }
+    }
 
-    results["mlp_cv_f1"][0] is the mean F1 score, results["mlp_cv_f1"][1] is the std. dev.
-    of the F1 score
+    classification_results["mlp_cv"]["f1"][0] is the mean F1 score, classification_results["mlp_cv"]["f1"][1] 
+    is the std. dev. of the F1 score
 
-    The F1 scores of the other classification adapters follow this pattern.
+    classification_results["mlp_cv"]["mauc"][0] is the mean mAUC score, 
+    classification_results["mlp_cv"]["mauc"][1] is the std. dev. of the mAUC score.
+
+    The F1 and mAUC scores of the other classification adapters follow these patterns.
 
     Args:
         json_list : The list of dataset-specific JSON file paths
@@ -45,10 +58,11 @@ def compute_classification_averages(json_list):
     Returns:
         classification_results : The computed metrics in a JSON-formatted map
     """
-    METRICS = METRICS_MAP["Classification"]
+    ADAPTERS = ["mlp_cv", "knn_cv", "logreg_cv"]
 
-    # Create accumulator for storing computations
-    accumulator = [[], [], []]
+    # Create accumulators for storing computations
+    f1_accumulator = [[], [], []]
+    mauc_accumulator = [[], [], []]
 
     # Iterate through the dataset results
     for file in json_list:
@@ -57,21 +71,30 @@ def compute_classification_averages(json_list):
         
         # WARNING: accumulator indices are hardcoded due to dataset results JSON structure
         # MLP
-        accumulator[0].append(dataset_results["mlp_cv"]["f1_weighted"][0])
+        f1_accumulator[0].append(dataset_results["mlp_cv"]["f1_weighted"][0])
+        mauc_accumulator[0].append(dataset_results["mlp_cv"]["roc_auc"][0])
 
         # KNN
-        accumulator[1].append(dataset_results["knn_cv"]["best_scores"]["f1_weighted"])
+        f1_accumulator[1].append(dataset_results["knn_cv"]["best_scores"]["f1_weighted"])
+        mauc_accumulator[1].append(dataset_results["knn_cv"]["best_scores"]["roc_auc"][0])
 
         # LR
-        accumulator[2].append(dataset_results["logreg_cv"]["f1_weighted"][0])
+        f1_accumulator[2].append(dataset_results["logreg_cv"]["f1_weighted"][0])
+        mauc_accumulator[2].append(dataset_results["logreg_cv"]["roc_auc"][0])
 
     # Compute averages and std devs
-    for idx in range(len(accumulator)):
-        computed_metrics = [np.mean(accumulator[idx]), np.std(accumulator[idx])]
-        accumulator[idx] = computed_metrics
+    for idx, accum_tuple in enumerate(zip(f1_accumulator, mauc_accumulator)):
+        adapter_f1, adapter_mauc = accum_tuple 
+
+        f1_metrics = [np.mean(adapter_f1), np.std(adapter_f1)]
+        mauc_metrics = [np.mean(adapter_mauc), np.std(adapter_mauc)]
+
+        f1_accumulator[idx] = f1_metrics
+        mauc_accumulator[idx] = mauc_metrics
 
     # Final computed metrics
-    classification_results = {METRICS[idx]:f1_scores for idx, f1_scores in enumerate(accumulator)}
+    classification_results = {adapter:{"f1":f1_accumulator[idx], "mauc":mauc_accumulator[idx]} \
+            for idx, adapter in enumerate(ADAPTERS)}
     
     return classification_results
         
@@ -81,10 +104,12 @@ def compute_retrieval_averages(json_list):
     used datasets.
 
     Sample output:
-    {"recall@5": [.783, .04],
-    "map": [.239, .04]}
+    {
+        "recall@5": [0.783, 0.04],
+        "map": [0.239, 0.04]
+    }
 
-    results["recall@5"][0] is the mean Recall@5 score, results["recall@5"][1]
+    retrieval_results["recall@5"][0] is the mean Recall@5 score, retrieval_results["recall@5"][1]
     is the std. dev. of the Recall@5 score
 
     mAP follows this pattern.
@@ -118,20 +143,22 @@ def compute_retrieval_averages(json_list):
         accumulator[idx] = computed_metrics
 
     # Final computed metrics
-    classification_results = {METRICS[idx]:scores for idx, scores in enumerate(accumulator)}
+    retrieval_results = {METRICS[idx]:scores for idx, scores in enumerate(accumulator)}
     
-    return classification_results
+    return retrieval_results
 
 def compute_clustering_averages(json_list):
     """
     Calculates the average NMI across the used datasets.
 
     Sample output:
-    {"nmi": [k_dict, .102, .03]}
+    {
+        "nmi": [k_dict, 0.102, 0.03]
+    }
 
     k_dict contains the best k values per task
     
-    results["nmi"][1] is the mean NMI score, results["nmi"][2] is the
+    clustering_results["nmi"][1] is the mean NMI score, clustering_results["nmi"][2] is the
     std. dev. of the NMI score
 
     Args:
@@ -168,9 +195,9 @@ def compute_clustering_averages(json_list):
     accumulator = [accumulator[0], mean_nmi, std_nmi]
 
     # Final computed metrics
-    classification_results = {METRIC:accumulator}
+    clustering_results = {METRIC:accumulator}
     
-    return classification_results
+    return clustering_results
 
 # Parse command line arguments
 parser = argparse.ArgumentParser(
