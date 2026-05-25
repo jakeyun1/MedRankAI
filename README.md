@@ -1,6 +1,6 @@
 # MedImage-FLEX: Medical Image Foundation Latent Embedding eXamination
 
-https://github.com/parrarodrigu/medimage-flex
+https://parrarodrigu.github.io/medimage-flex/
 
 ## Setup
 1. Prior to setup, it is recommended to set up a separate environment using the correct Python version (3.10.19)
