@@ -264,6 +264,8 @@ with open(full_path, "w") as f:
 # Confirmation of creation of results JSON file
 message = f"\n{filename} has been created at " + \
         f"{os.sep.join(os.path.dirname(os.path.abspath(filename)).split(os.sep)[-2:])}.\n"
-print("=" * len(message.strip()))
+
+width = os.get_terminal_size().columns
+print("=" * width)
 print(message)
-print("=" * len(message.strip()))
+print("=" * width)
