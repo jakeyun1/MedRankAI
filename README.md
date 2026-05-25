@@ -1,4 +1,5 @@
-# <b>MedImage-FLEX:</b> <b>Med</b>ical <b>Image</b> <b>F</b>oundation <b>L</b>atent <b>E</b>mbedding e<b>X</b>amination
+<h1> <b>MedImage-FLEX:</b> <b>Med</b>ical <b>Image</b> <b>F</b>oundation <b>L</b>atent <b>E</b>mbedding e<b>X</b>amination </h1>
+
 [https://parrarodrigu.github.io/medimage-flex](https://parrarodrigu.github.io/foundation-model-site)
 
 ## Setup
