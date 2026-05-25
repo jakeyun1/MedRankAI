@@ -1,5 +1,5 @@
-# Medical Foundation Model Testbench #
-https://parrarodrigu.github.io/foundation-model-site
+# **MedImage-FLEX:** **Med**ical **Image** **F**oundation **L**atent **E**mbedding e**X**amination #
+[https://parrarodrigu.github.io/medimage-flex](https://parrarodrigu.github.io/foundation-model-site)
 
 ## Setup ##
 1. Prior to setup, it is recommended to set up a separate environment using the correct Python version (3.10.19)
