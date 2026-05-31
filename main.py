@@ -9,6 +9,7 @@ import sys
 import json
 import argparse
 from datetime import datetime
+from sklearn.model_selection import train_test_split
 
 PROHIBITED_CHARS = ["\\", "/", ":", "*", "?", "\"", "<", ">", "|", "_"]
 
@@ -125,6 +126,16 @@ def main():
             batch_size = batch_size,
             shuffle = shuffle
         )
+
+        # FIXME: Can change if using better compute resources
+        train_size = 7000
+        
+        if len(metadata_df) > train_size:
+            metadata_df, _ = train_test_split(metadata_df, train_size = train_size, \
+            stratify = metadata_df[label_col], random_state = 42)
+            print(f"Dataset stratified and downsampled to {train_size} examples." + \
+                  " Adjust as needed by editing main.py.")
+
 
         # Extract embeddings
         embeddings, image_paths = extract_embeddings(

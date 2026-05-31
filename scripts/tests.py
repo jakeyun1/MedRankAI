@@ -64,11 +64,6 @@ def prepare_data_multilabel(dataset_name, embeddings, metadata_df, image_paths, 
         how = "inner"
     ).dropna(subset = [label_col])
 
-    # FIXME: For CheXpert, ~200K embeddings destroys resources
-    # FIXME: Change if using better computing resources
-    if len(df) > 20000:
-        df = df.sample(n = 20000, random_state = 42).reset_index(drop = True)
-
     X = df.drop(columns = [id_col, label_col]).values
 
     # Label type detection: multiclass v.s. multilabel
@@ -136,11 +131,6 @@ def prepare_data_multiclass(dataset_name, embeddings, metadata_df, image_paths, 
         on = id_col,
         how = "inner"
     ).dropna(subset = [label_col])
-
-    # FIXME: Currently for CheXpert, ~200K embeddings destroys resources
-    # FIXME: Change if using better computing resources
-    if len(df) > 20000:
-        df = df.sample(n = 20000, random_state = 42).reset_index(drop = True)
 
     X = df.drop(columns = [id_col, label_col]).values
 
